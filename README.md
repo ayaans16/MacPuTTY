@@ -1,2 +1,1 @@
-# puttygen-macos
-A PuTTYgen emulator for MacOS
+<img src="https://www.ssh.com/hubfs/Imported_Blog_Media/puttygen_created_key_and_asking_for_passphase_to_save_private_key-2.png">
