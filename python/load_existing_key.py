@@ -6,6 +6,7 @@ This file is meant to take in existing private keys so you can:
 """
 
 from pathlib import Path
+from pyhocon import ConfigFactory
 
 # imports for key detection
 from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_ssh_private_key
@@ -23,6 +24,10 @@ from cryptography.hazmat.primitives import hashes
 
 # ed25519 import
 from cryptography.hazmat.primitives.asymmetric import ed25519
+
+# hocon config info
+config = ConfigFactory.parse_file('config.conf')
+ssh_directory = config.get('directory.path')
 
 """
 for reference: -> str means the function return type should be a string
@@ -76,6 +81,15 @@ def pubkey_generation(key_bytes: bytes, password: bytes = None) -> str:
 
 """
 example usage:
-key_bytes = Path("~/test_ssh/id_ed25519").expanduser().read_bytes()
 pubkey_generation(key_bytes)
+"""
+
+def add_comment_to_file(pubkey_filepath, comment: str) -> None:
+    pubkey_filepath = Path(pubkey_filepath).expanduser()
+    content = pubkey_filepath.read_text().rstrip("\n")
+    updated = f"{content} {comment}\n"
+    pubkey_filepath.write_text(updated)
+
+"""
+add_comment_to_file("~/test_ssh/id_ed25519.pub", "ayaan@macbook")
 """
