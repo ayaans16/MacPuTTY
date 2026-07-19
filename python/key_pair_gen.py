@@ -33,14 +33,14 @@ def generate_rsa_key_pair():
 
 
     # file and directory info
-    ssh_directory = Path(f"{ssh_directory}").expanduser()
-    ssh_directory.mkdir(parents=True, exist_ok=True)
+    key_directory = Path(ssh_directory).expanduser()
+    key_directory.mkdir(parents=True, exist_ok=True)
 
     private_rsa_key_filename = "id_rsa"
     public_rsa_key_filename = "id_rsa.pub"
 
-    private_key_filepath = ssh_directory / private_rsa_key_filename
-    public_key_filepath = ssh_directory / public_rsa_key_filename
+    private_key_filepath = key_directory / private_rsa_key_filename
+    public_key_filepath = key_directory / public_rsa_key_filename
 
     # pem
     """
@@ -84,14 +84,14 @@ def generate_ecdsa_key_pair():
     )
 
     # file and directory info
-    ssh_directory = Path(f"{ssh_directory}").expanduser()
-    ssh_directory.mkdir(parents=True, exist_ok=True)
+    key_directory = Path(ssh_directory).expanduser()
+    key_directory.mkdir(parents=True, exist_ok=True)
 
     private_ecdsa_key_filename = "id_ecdsa"
     public_ecdsa_key_filename = "id_ecdsa.pub"
 
-    private_key_filepath = ssh_directory / private_ecdsa_key_filename
-    public_key_filepath = ssh_directory / public_ecdsa_key_filename
+    private_key_filepath = key_directory / private_ecdsa_key_filename
+    public_key_filepath = key_directory / public_ecdsa_key_filename
 
     # create id_rsa and id_rsa.pub
     private_key_filepath.write_bytes(private_pem)
@@ -118,14 +118,14 @@ def generate_ed25519_key_pair():
     )
 
     # file and directory info
-    ssh_directory = Path(f"{ssh_directory}").expanduser()
-    ssh_directory.mkdir(parents=True, exist_ok=True)
+    key_directory = Path(ssh_directory).expanduser()
+    key_directory.mkdir(parents=True, exist_ok=True)
 
     private_ed25519_key_filename = "id_ed25519"
     public_ed25519_key_filename = "id_ed25519.pub"
 
-    private_key_filepath = ssh_directory / private_ed25519_key_filename
-    public_key_filepath = ssh_directory / public_ed25519_key_filename
+    private_key_filepath = key_directory / private_ed25519_key_filename
+    public_key_filepath = key_directory / public_ed25519_key_filename
 
     # create id_rsa and id_rsa.pub
     private_key_filepath.write_bytes(private_pem)
