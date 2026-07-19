@@ -89,6 +89,8 @@ make build
 
 Electron should open and you will now be able to configure, create and manage SSH keys.
 
+![terminal](etc/terminal.gif)
+
 ## Future Improvements
 > [!TIP]
 > - [ ] Fix issues with comments
