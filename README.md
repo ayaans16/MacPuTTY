@@ -41,8 +41,11 @@ directory {
     path = "~/.ssh"
 }
 ```
-
-Edit `docker-compose.yml` to change the port from `5050` to `5000` (or keep it):
+---
+### `docker-compose.yml`
+> [!WARNING]
+> Edit `docker-compose.yml` to change the port from `5050` to `5000` (or keep it)<br>
+> The reason why is (at least for me, on my MacBook), AirPlay was interfering with port `5000`
 <details>
   <summary><b>docker-compose.yml</b></summary>
 
@@ -71,6 +74,8 @@ volumes:
   keys:
 ```
 </details>
+
+---
 
 > [!IMPORTANT]
 > Keep the port at `5000` in `Dockerfile`.
