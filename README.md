@@ -24,6 +24,8 @@ flowchart TD
     F --> H[Getting the public key]
 ```
 ## Installation
+![terminal](etc/terminal.gif)
+
 > [!NOTE]
 > Because we are using Docker, a virtual environment is not required.
 
@@ -88,8 +90,7 @@ make build
 > If you have any issues during the containerization step, run: `docker compose ps` to ensure it shows a `healthy` status
 
 Electron should open and you will now be able to configure, create and manage SSH keys.
-
-![terminal](etc/terminal.gif)
+![terminal](etc/rsa_test.gif)
 
 ## Future Improvements
 > [!TIP]
