@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MacPuTTY</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="titlebar">
+    <div class="keyhole" aria-hidden="true"></div>
+    <h1>MacPuTTY</h1>
+    <span class="titlebar-sub">SSH key generator</span>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="keygen">Key Generator</button>
+    <button class="tab-btn" data-tab="sshtest">Test Connection</button>
+  </nav>
+
+  <main class="window" id="tab-keygen">
+
+    <section class="panel">
+      <h2 class="panel-title">Key</h2>
+
+      <label class="field-label" for="publicKeyText">
+        Public key for pasting into OpenSSH authorized_keys file
+      </label>
+      <textarea id="publicKeyText" class="mono key-display" rows="6" readonly
+        placeholder="Generate or load a key to see its public key here."></textarea>
+
+      <div class="field-row">
+        <label class="field-label" for="fingerprint">Key fingerprint</label>
+        <input id="fingerprint" class="mono" type="text" readonly placeholder="—" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="comment">Key comment</label>
+        <input id="comment" type="text" placeholder="e.g. you@yourmachine" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="passphrase">
+          Passphrase <span class="field-hint">(only used when loading a protected key)</span>
+        </label>
+        <input id="passphrase" type="password" placeholder="Leave blank if none" />
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Actions</h2>
+
+      <div class="action-row">
+        <p>Generate a public/private key pair</p>
+        <button id="generateBtn" class="btn btn-accent">Generate</button>
+      </div>
+
+      <div class="action-row">
+        <p>Load an existing private key file</p>
+        <label class="btn btn-outline file-btn">
+          Load
+          <input id="loadInput" type="file" hidden />
+        </label>
+      </div>
+
+      <div class="action-row">
+        <p>Save the current key</p>
+        <div class="btn-group">
+          <button id="savePublicBtn" class="btn btn-outline" disabled>Save public key</button>
+          <button id="savePrivateBtn" class="btn btn-outline btn-danger-outline" disabled>Save private key</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Parameters</h2>
+
+      <fieldset class="key-type-group">
+        <legend>Type of key to generate</legend>
+
+        <label class="radio-option">
+          <input type="radio" name="keyType" value="rsa" checked />
+          <span>RSA</span>
+        </label>
+
+        <label class="radio-option">
+          <input type="radio" name="keyType" value="ecdsa" />
+          <span>ECDSA</span>
+        </label>
+
+        <label class="radio-option">
+          <input type="radio" name="keyType" value="ed25519" />
+          <span>ED25519</span>
+        </label>
+      </fieldset>
+
+      <p class="param-note" id="paramNote">RSA — 4096 bits (fixed by the server)</p>
+    </section>
+
+  </main>
+
+  <main class="window hidden" id="tab-sshtest">
+
+    <section class="panel">
+      <h2 class="panel-title">Connection</h2>
+
+      <div class="field-row">
+        <label class="field-label" for="sshHost">Host</label>
+        <input id="sshHost" type="text" placeholder="e.g. 192.168.2.1" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="sshPort">Port</label>
+        <input id="sshPort" type="text" placeholder="22" value="22" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="sshUsername">Username</label>
+        <input id="sshUsername" type="text" placeholder="e.g. ubuntu" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="sshTimeout">Timeout (seconds)</label>
+        <input id="sshTimeout" type="text" placeholder="5" value="5" />
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Private Key</h2>
+
+      <div class="action-row">
+        <p id="sshKeyFileName">No private key file selected</p>
+        <label class="btn btn-outline file-btn">
+          Choose key
+          <input id="sshKeyInput" type="file" hidden />
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Actions</h2>
+
+      <div class="action-row">
+        <p>Attempt to connect using the fields above</p>
+        <button id="testConnectionBtn" class="btn btn-accent" disabled>Test Connection</button>
+      </div>
+
+      <p class="param-note" id="sshTestResult"></p>
+    </section>
+
+  </main>
+
+  <footer class="statusbar">
+    <span id="statusText">Ready.</span>
+  </footer>
+
+  <script src="./node_modules/jszip/dist/jszip.min.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>
