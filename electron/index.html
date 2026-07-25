@@ -12,7 +12,12 @@
     <span class="titlebar-sub">SSH key generator</span>
   </header>
 
-  <main class="window">
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="keygen">Key Generator</button>
+    <button class="tab-btn" data-tab="sshtest">Test Connection</button>
+  </nav>
+
+  <main class="window" id="tab-keygen">
 
     <section class="panel">
       <h2 class="panel-title">Key</h2>
@@ -89,6 +94,57 @@
       </fieldset>
 
       <p class="param-note" id="paramNote">RSA — 4096 bits (fixed by the server)</p>
+    </section>
+
+  </main>
+
+  <main class="window hidden" id="tab-sshtest">
+
+    <section class="panel">
+      <h2 class="panel-title">Connection</h2>
+
+      <div class="field-row">
+        <label class="field-label" for="sshHost">Host</label>
+        <input id="sshHost" type="text" placeholder="e.g. 192.168.2.1" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="sshPort">Port</label>
+        <input id="sshPort" type="text" placeholder="22" value="22" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="sshUsername">Username</label>
+        <input id="sshUsername" type="text" placeholder="e.g. ubuntu" />
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="sshTimeout">Timeout (seconds)</label>
+        <input id="sshTimeout" type="text" placeholder="5" value="5" />
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Private Key</h2>
+
+      <div class="action-row">
+        <p id="sshKeyFileName">No private key file selected</p>
+        <label class="btn btn-outline file-btn">
+          Choose key
+          <input id="sshKeyInput" type="file" hidden />
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Actions</h2>
+
+      <div class="action-row">
+        <p>Attempt to connect using the fields above</p>
+        <button id="testConnectionBtn" class="btn btn-accent" disabled>Test Connection</button>
+      </div>
+
+      <p class="param-note" id="sshTestResult"></p>
     </section>
 
   </main>

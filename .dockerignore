@@ -3,3 +3,4 @@ electron/
 __pycache__/
 *.pyc
 .git/
+.claude/
