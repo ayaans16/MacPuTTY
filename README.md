@@ -99,6 +99,7 @@ Electron should open and you will now be able to configure, create and manage SS
 ## SSH Connection Tester
 You can verify if your private key and virtual private server details (host, port [defaulted to 22], username), with a timeout of your choice, allow you to establish a secure connection to the remote server.
 - Core logic is located in `ssh/ssh-connection-test.py`
+![ssh-test](etc/ssh-test.png)
 
 ## Future Improvements
 > [!TIP]
