@@ -7,7 +7,7 @@ services:
       - "5050:5000"
     volumes:
       - ./config.conf:/app/config.conf:ro
-      - keys:/root/test_ssh
+      - keys:/root/.ssh
     environment:
       - PYTHONUNBUFFERED=1
     healthcheck:
