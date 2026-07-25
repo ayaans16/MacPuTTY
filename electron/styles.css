@@ -81,6 +81,40 @@ body {
   clip-path: polygon(50% 0%, 100% 40%, 70% 40%, 70% 100%, 30% 100%, 30% 40%, 0% 40%);
 }
 
+/* ---------- Tabs ---------- */
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 10px 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-btn {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-dim);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.tab-btn:hover {
+  color: var(--text);
+}
+
+.tab-btn.active {
+  color: var(--brass);
+  border-bottom-color: var(--brass);
+}
+
+.hidden {
+  display: none !important;
+}
+
 /* ---------- Layout ---------- */
 
 .window {

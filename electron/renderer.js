@@ -12,6 +12,15 @@ const els = {
   paramNote: document.getElementById("paramNote"),
   statusText: document.getElementById("statusText"),
   statusbar: document.querySelector(".statusbar"),
+  tabBtns: document.querySelectorAll(".tab-btn"),
+  sshHost: document.getElementById("sshHost"),
+  sshPort: document.getElementById("sshPort"),
+  sshUsername: document.getElementById("sshUsername"),
+  sshTimeout: document.getElementById("sshTimeout"),
+  sshKeyInput: document.getElementById("sshKeyInput"),
+  sshKeyFileName: document.getElementById("sshKeyFileName"),
+  testConnectionBtn: document.getElementById("testConnectionBtn"),
+  sshTestResult: document.getElementById("sshTestResult"),
 };
 
 const PARAM_NOTES = {
@@ -244,3 +253,80 @@ els.savePrivateBtn.addEventListener("click", async () => {
 
 
 els.publicKeyText.addEventListener("input", refreshFingerprint);
+
+// ---------- Tabs ----------
+
+els.tabBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    els.tabBtns.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    document.getElementById("tab-keygen").classList.add("hidden");
+    document.getElementById("tab-sshtest").classList.add("hidden");
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.remove("hidden");
+  });
+});
+
+// ---------- SSH connection test ----------
+
+const sshState = {
+  keyFile: null,
+};
+
+function refreshTestConnectionBtn() {
+  els.testConnectionBtn.disabled = !(
+    els.sshHost.value.trim() &&
+    els.sshPort.value.trim() &&
+    els.sshUsername.value.trim() &&
+    sshState.keyFile
+  );
+}
+
+[els.sshHost, els.sshPort, els.sshUsername].forEach((input) => {
+  input.addEventListener("input", refreshTestConnectionBtn);
+});
+
+els.sshKeyInput.addEventListener("change", () => {
+  const file = els.sshKeyInput.files[0];
+  sshState.keyFile = file || null;
+  els.sshKeyFileName.textContent = file ? file.name : "No private key file selected";
+  refreshTestConnectionBtn();
+});
+
+els.testConnectionBtn.addEventListener("click", async () => {
+  els.sshTestResult.textContent = "";
+  setStatus("Testing SSH connection…");
+  els.testConnectionBtn.disabled = true;
+
+  try {
+    const formData = new FormData();
+    formData.append("host", els.sshHost.value.trim());
+    formData.append("port", els.sshPort.value.trim());
+    formData.append("username", els.sshUsername.value.trim());
+    formData.append("timeout", els.sshTimeout.value.trim() || "5");
+    formData.append("file", sshState.keyFile);
+
+    const res = await fetch(`${BACKEND_URL}/test-connection`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const body = await res.json();
+    if (!res.ok) {
+      throw new Error(body.error || `Server returned ${res.status}`);
+    }
+
+    if (body.success) {
+      els.sshTestResult.textContent = "Connection succeeded.";
+      setStatus("SSH connection succeeded.", "success");
+    } else {
+      els.sshTestResult.textContent = `Connection failed: ${body.error}`;
+      setStatus("SSH connection failed.", "error");
+    }
+  } catch (err) {
+    els.sshTestResult.textContent = `Connection failed: ${err.message}`;
+    setStatus(`Couldn't test the connection: ${err.message}`, "error");
+  } finally {
+    refreshTestConnectionBtn();
+  }
+});
