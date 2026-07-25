@@ -1,6 +1,7 @@
 import io
 import zipfile
 import tempfile
+import importlib.util
 from pathlib import Path
 
 from flask import Flask, request, jsonify, send_file
@@ -18,6 +19,14 @@ from comment import add_comment_to_file
 app = Flask(__name__)
 CORS(app)
 app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024
+
+# "ssh-connection-test.py" has a hyphen, so it can't be imported with a normal
+# `import` statement; load it directly from its file path instead.
+_SSH_TEST_PATH = Path(__file__).resolve().parent.parent / "ssh" / "ssh-connection-test.py"
+_ssh_test_spec = importlib.util.spec_from_file_location("ssh_connection_test_module", _SSH_TEST_PATH)
+_ssh_test_module = importlib.util.module_from_spec(_ssh_test_spec)
+_ssh_test_spec.loader.exec_module(_ssh_test_module)
+ssh_connection_test = _ssh_test_module.ssh_connection_test
 
 GENERATORS = {
     "rsa": (generate_rsa_key_pair, "id_rsa", "id_rsa.pub"),
@@ -113,6 +122,44 @@ def comment_key():
         as_attachment=True,
         download_name=uploaded.filename or "id_key.pub",
     )
+
+
+@app.route("/test-connection", methods=["POST"])
+def test_connection():
+    host = request.form.get("host")
+    username = request.form.get("username")
+    port = request.form.get("port")
+    timeout = request.form.get("timeout")
+
+    if not host or not username or not port:
+        return jsonify({"error": "Missing required field(s): host, port, username"}), 400
+
+    if "file" not in request.files:
+        return jsonify({"error": "No key file uploaded (expected form field 'file')"}), 400
+
+    try:
+        port = int(port)
+    except ValueError:
+        return jsonify({"error": "Port must be a number"}), 400
+
+    try:
+        timeout = float(timeout) if timeout else 5
+    except ValueError:
+        return jsonify({"error": "Timeout must be a number"}), 400
+
+    uploaded = request.files["file"]
+
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(uploaded.read())
+        tmp_path = tmp.name
+
+    try:
+        Path(tmp_path).chmod(0o600)
+        success, error = ssh_connection_test(host, port, username, tmp_path, timeout)
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
+
+    return jsonify({"success": success, "error": error})
 
 
 if __name__ == "__main__":
