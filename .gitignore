@@ -2,3 +2,5 @@
 electron/node_modules/*
 electron/node_modules/
 .claude/
+python/__pycache__/
+ssh/__pycache__/
