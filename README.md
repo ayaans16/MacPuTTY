@@ -22,6 +22,10 @@ flowchart TD
 
     F[Loading an existing private key] --> G[Adding a comment]
     F --> H[Getting the public key]
+
+    I[Test an SSH connection] --> J[Input virtual private server details]
+    J --> K[Choose private key that is on server]
+    K --> L[Test the connection]
 ```
 ## Installation
 ![terminal](etc/terminal.gif)
@@ -92,8 +96,12 @@ make build
 Electron should open and you will now be able to configure, create and manage SSH keys.
 ![terminal](etc/rsa_test.gif)
 
+## SSH Connection Tester
+You can verify if your private key and virtual private server details (host, port [defaulted to 22], username), with a timeout of your choice, allow you to establish a secure connection to the remote server.
+- Core logic is located in `ssh/ssh-connection-test.py`
+
 ## Future Improvements
 > [!TIP]
 > - [ ] Fix issues with comments
 > - [ ] Visualization of SSH key usage based on a user's `config` file
-> - [ ] UI improvements
+> - [x] UI improvements
