@@ -28,8 +28,11 @@ flowchart TD
     K --> L[Test the connection]
 ```
 ## Installation
+> [!IMPORTANT]
+> There are now **two** ways to use MacPuTTY, you can either download it as an app or run it via Docker Compose.
 ![terminal](etc/terminal.gif)
 
+### Docker Desktop + Compose
 > [!NOTE]
 > Because we are using Docker, a virtual environment is not required.
 
@@ -48,7 +51,7 @@ directory {
 }
 ```
 ---
-### `docker-compose.yml`
+`docker-compose.yml`
 > [!WARNING]
 > Edit `docker-compose.yml` to change the port from `5050` to `5000` (or keep it)<br>
 > The reason why is (at least for me, on my MacBook), AirPlay was interfering with port `5000`
@@ -95,6 +98,20 @@ make build
 
 Electron should open and you will now be able to configure, create and manage SSH keys.
 ![terminal](etc/rsa_test.gif)
+
+## Application (`.dmg`)
+> [!WARNING]
+> The `.dmg` file may be a large file, it may take some time for the download to finish.
+
+- Clone the repository:
+```
+git clone https://github.com/ayaans16/MacPuTTY
+```
+- Run the following command:
+```
+make dist
+```
+- Go to `dist/mac-arm64` and download the `.dmg` file that is created
 
 ## SSH Connection Tester
 You can verify if your private key and virtual private server details (host, port [defaulted to 22], username), with a timeout of your choice, allow you to establish a secure connection to the remote server.
