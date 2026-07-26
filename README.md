@@ -8,6 +8,7 @@ A PuTTYgen emulator designed for Apple Silicon users who cannot use native PuTTY
     - [Docker Desktop + Compose](https://github.com/ayaans16/MacPuTTY/blob/main/README.md#docker-desktop--compose)
     - [Application (.dmg)](https://github.com/ayaans16/MacPuTTY/blob/main/README.md#application-dmg)
 - [SSH Connection](https://github.com/ayaans16/MacPuTTY/blob/main/README.md#ssh-connection-tester)
+- [SSH Config Visualizer](https://github.com/ayaans16/MacPuTTY#config-visualizer)
 - [Future Improvements](https://github.com/ayaans16/MacPuTTY/blob/main/README.md#future-improvements)
 
 ## What is PuTTYgen?
