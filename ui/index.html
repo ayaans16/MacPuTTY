@@ -15,6 +15,7 @@
   <nav class="tabs">
     <button class="tab-btn active" data-tab="keygen">Key Generator</button>
     <button class="tab-btn" data-tab="sshtest">Test Connection</button>
+    <button class="tab-btn" data-tab="keyusage">Key Usage</button>
   </nav>
 
   <main class="window" id="tab-keygen">
@@ -148,6 +149,35 @@
     </section>
 
   </main>
+
+  <main class="window hidden" id="tab-keyusage">
+
+  <section class="panel">
+    <h2 class="panel-title">SSH Config Key Usage</h2>
+
+    <div class="action-row">
+      <p>Shows which key each configured Host uses, and whether that key file exists</p>
+      <button id="refreshKeyUsageBtn" class="btn btn-outline">Refresh</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="key-usage-table">
+        <thead>
+          <tr>
+            <th>Host</th>
+            <th>Hostname</th>
+            <th>User</th>
+            <th>Identity File(s)</th>
+          </tr>
+        </thead>
+        <tbody id="keyUsageBody">
+          <tr><td colspan="4" class="empty-state">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
 
   <footer class="statusbar">
     <span id="statusText">Ready.</span>
