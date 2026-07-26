@@ -17,6 +17,7 @@ from key_pair_gen import (
 )
 from load_existing_key import get_key_type, pubkey_generation
 from comment import add_comment_to_file
+from ssh_config_visualizer import get_ssh_config_usage
 
 app = Flask(__name__)
 CORS(app)
@@ -163,6 +164,9 @@ def test_connection():
 
     return jsonify({"success": success, "error": error})
 
+@app.route("/ssh-config-usage")
+def ssh_config_usage_route():
+    return jsonify(get_ssh_config_usage(ssh_directory))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

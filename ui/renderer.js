@@ -21,6 +21,8 @@ const els = {
   sshKeyFileName: document.getElementById("sshKeyFileName"),
   testConnectionBtn: document.getElementById("testConnectionBtn"),
   sshTestResult: document.getElementById("sshTestResult"),
+  refreshKeyUsageBtn: document.getElementById("refreshKeyUsageBtn"),
+  keyUsageBody: document.getElementById("keyUsageBody"),
 };
 
 const PARAM_NOTES = {
@@ -263,7 +265,10 @@ els.tabBtns.forEach((btn) => {
 
     document.getElementById("tab-keygen").classList.add("hidden");
     document.getElementById("tab-sshtest").classList.add("hidden");
+    document.getElementById("tab-keyusage").classList.add("hidden");
     document.getElementById(`tab-${btn.dataset.tab}`).classList.remove("hidden");
+
+    if (btn.dataset.tab === "keyusage") loadKeyUsage();
   });
 });
 
@@ -330,3 +335,85 @@ els.testConnectionBtn.addEventListener("click", async () => {
     refreshTestConnectionBtn();
   }
 });
+
+function emptyStateRow(message) {
+  els.keyUsageBody.innerHTML = "";
+  const tr = document.createElement("tr");
+  const td = document.createElement("td");
+  td.colSpan = 4;
+  td.className = "empty-state";
+  td.textContent = message;
+  tr.appendChild(td);
+  els.keyUsageBody.appendChild(tr);
+}
+
+function renderKeyUsage(data) {
+  els.keyUsageBody.innerHTML = "";
+
+  if (!data.config_exists) {
+    emptyStateRow(`No SSH config file found at ${data.config_path}`);
+    return;
+  }
+
+  if (data.hosts.length === 0) {
+    emptyStateRow("Config file found, but no Host entries are defined.");
+    return;
+  }
+
+  data.hosts.forEach((h) => {
+    const tr = document.createElement("tr");
+
+    const hostTd = document.createElement("td");
+    hostTd.textContent = h.host;
+    tr.appendChild(hostTd);
+
+    const hostnameTd = document.createElement("td");
+    hostnameTd.textContent = h.port ? `${h.hostname}:${h.port}` : h.hostname;
+    tr.appendChild(hostnameTd);
+
+    const userTd = document.createElement("td");
+    userTd.textContent = h.user || "—";
+    tr.appendChild(userTd);
+
+    const keysTd = document.createElement("td");
+    keysTd.className = "mono";
+    if (h.identity_files.length === 0) {
+      const span = document.createElement("span");
+      span.className = "field-hint";
+      span.textContent = "none configured";
+      keysTd.appendChild(span);
+    } else {
+      h.identity_files.forEach((f) => {
+        const div = document.createElement("div");
+        div.className = f.exists ? "key-ok" : "key-missing";
+        div.textContent = `${f.exists ? "✓" : "✗"} ${f.path}`;
+        keysTd.appendChild(div);
+      });
+    }
+    tr.appendChild(keysTd);
+
+    els.keyUsageBody.appendChild(tr);
+  });
+}
+
+async function loadKeyUsage() {
+  setStatus("Loading SSH config usage…");
+  try {
+    const res = await fetch(`${BACKEND_URL}/ssh-config-usage`);
+    const body = await res.json();
+    if (!res.ok) {
+      throw new Error(body.error || `Server returned ${res.status}`);
+    }
+
+    renderKeyUsage(body);
+    setStatus(
+      `Loaded ${body.hosts.length} host${body.hosts.length === 1 ? "" : "s"} from ${body.config_path}`,
+      "success"
+    );
+  } catch (err) {
+    emptyStateRow(`Couldn't load SSH config usage: ${err.message}`);
+    setStatus(`Couldn't load SSH config usage: ${err.message}`, "error");
+  }
+}
+
+els.refreshKeyUsageBtn.addEventListener("click", loadKeyUsage);

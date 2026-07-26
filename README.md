@@ -129,8 +129,17 @@ You can verify if your private key and virtual private server details (host, por
 
 ![ssh-test](etc/ssh-test.png)
 
+## Config Visualizer
+Using the SSH folder path in `config.conf`, you can see a visual of your SSH key paths and which hosts they relate to!
+- If the key is present, it will present a checkmark with a gold colour of your key path
+- If the key is not present, it will present an X mark with a red colour of your key path
+
+It automatically will look for `path/to/ssh/config` (where `config` is the filename it requires)
+
+![ssh-test](etc/config.png)
+
 ## Future Improvements
 > [!TIP]
-> - [ ] Fix issues with comments
-> - [ ] Visualization of SSH key usage based on a user's `config` file
+> - [X] Fix issues with comments
+> - [X] Visualization of SSH key usage based on a user's `config` file
 > - [x] UI improvements
