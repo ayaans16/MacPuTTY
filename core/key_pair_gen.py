@@ -21,13 +21,15 @@ from cryptography.hazmat.primitives.asymmetric import ed25519
 # hocon config info
 CONFIG_PATH = resource_path("config.conf")
 config = ConfigFactory.parse_file(str(CONFIG_PATH))
+
 ssh_directory = config.get('directory.path')
+rsa_key_bits = config.get('key_size.rsa', 4096)
 
 def generate_rsa_key_pair():
     # generate keys
     private_key = rsa.generate_private_key(
         public_exponent=65537,
-        key_size=4096,
+        key_size=rsa_key_bits,
     )
 
     public_key = private_key.public_key()
