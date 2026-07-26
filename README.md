@@ -39,6 +39,7 @@ flowchart TD
 ## Installation
 > [!IMPORTANT]
 > There are now **two** ways to use MacPuTTY, you can either download it as an app or run it via Docker Compose.
+
 ![terminal](etc/terminal.gif)
 
 ### Docker Desktop + Compose
