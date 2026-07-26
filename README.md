@@ -1,6 +1,15 @@
 # MacPuTTY
 A PuTTYgen emulator designed for Apple Silicon users who cannot use native PuTTYgen.
 
+## Table of Contents
+- [What is PuTTYgen?](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#what-is-puttygen)
+- [Architecture](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#architecture)
+- [Installation](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#installation)
+    - [Docker Desktop + Compose](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#docker-desktop--compose)
+    - [Application (.dmg)](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#application-dmg)
+- [SSH Connection](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#ssh-connection-tester)
+- [Future Improvements](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#future-improvements)
+
 ## What is PuTTYgen?
 It is a software used to create keys used for remote connections via SSH.
 - In a remote server, the public key of an SSH key pair is added to `~/.ssh/authorized_keys` to allow them to access the server
@@ -99,7 +108,7 @@ make build
 Electron should open and you will now be able to configure, create and manage SSH keys.
 ![terminal](etc/rsa_test.gif)
 
-## Application (`.dmg`)
+### Application (`.dmg`)
 > [!WARNING]
 > The `.dmg` file may be a large file, it may take some time for the download to finish.
 
