@@ -2,13 +2,13 @@
 A PuTTYgen emulator designed for Apple Silicon users who cannot use native PuTTYgen.
 
 ## Table of Contents
-- [What is PuTTYgen?](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#what-is-puttygen)
-- [Architecture](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#architecture)
-- [Installation](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#installation)
-    - [Docker Desktop + Compose](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#docker-desktop--compose)
-    - [Application (.dmg)](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#application-dmg)
-- [SSH Connection](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#ssh-connection-tester)
-- [Future Improvements](https://github.com/ayaans16/MacPuTTY/edit/main/README.md#future-improvements)
+- [What is PuTTYgen?](https://github.com/ayaans16/MacPuTTY/main/README.md#what-is-puttygen)
+- [Architecture](https://github.com/ayaans16/MacPuTTY/main/README.md#architecture)
+- [Installation](https://github.com/ayaans16/MacPuTTY/main/README.md#installation)
+    - [Docker Desktop + Compose](https://github.com/ayaans16/MacPuTTY/main/README.md#docker-desktop--compose)
+    - [Application (.dmg)](https://github.com/ayaans16/MacPuTTY/main/README.md#application-dmg)
+- [SSH Connection](https://github.com/ayaans16/MacPuTTY/main/README.md#ssh-connection-tester)
+- [Future Improvements](https://github.com/ayaans16/MacPuTTY/main/README.md#future-improvements)
 
 ## What is PuTTYgen?
 It is a software used to create keys used for remote connections via SSH.
