@@ -1,9 +1,11 @@
 import io
+import sys
 import zipfile
 import tempfile
 import importlib.util
 from pathlib import Path
 
+from paths import resource_path
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
@@ -22,7 +24,7 @@ app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024
 
 # "ssh-connection-test.py" has a hyphen, so it can't be imported with a normal
 # `import` statement; load it directly from its file path instead.
-_SSH_TEST_PATH = Path(__file__).resolve().parent.parent / "ssh" / "ssh-connection-test.py"
+_SSH_TEST_PATH = resource_path("ssh", "ssh-connection-test.py")
 _ssh_test_spec = importlib.util.spec_from_file_location("ssh_connection_test_module", _SSH_TEST_PATH)
 _ssh_test_module = importlib.util.module_from_spec(_ssh_test_spec)
 _ssh_test_spec.loader.exec_module(_ssh_test_module)
@@ -164,3 +166,7 @@ def test_connection():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+    if getattr(sys, "frozen", False):
+        app.run(host="127.0.0.1", port=5050, debug=False)
+    else:
+        app.run(host="0.0.0.0", port=5000, debug=True)
