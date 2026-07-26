@@ -2,6 +2,7 @@
 This file will be used to generate a public & private key file pair.
 Types include: RSA, ECDSA, ED25519
 """
+from paths import resource_path
 from pathlib import Path
 from pyhocon import ConfigFactory
 from cryptography.hazmat.primitives import serialization
@@ -18,7 +19,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import ed25519
 
 # hocon config info
-CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.conf"
+CONFIG_PATH = resource_path("config.conf")
 config = ConfigFactory.parse_file(str(CONFIG_PATH))
 ssh_directory = config.get('directory.path')
 
