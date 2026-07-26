@@ -1,6 +1,17 @@
 .venv/*
+
 ui/node_modules/*
 ui/node_modules/
+
 .claude/
+
 core/__pycache__/
 ssh/__pycache__/
+
+ui/resources/backend/
+
+/dist/
+
+.pyinstaller-build/
+/build/
+*.spec
