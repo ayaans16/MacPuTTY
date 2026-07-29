@@ -1,3 +1,9 @@
+# version 1.2
+- ability to download project as an app
+- added bash script
+- added jupyter notebook project mvp instructions in `docs/`
+- updates to `Dockerfile` and `docker-compose.yml`
+
 # version 1.1
 - ability to test ssh connection
 - ui improvements
