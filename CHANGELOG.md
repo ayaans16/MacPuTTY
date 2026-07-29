@@ -1,3 +1,7 @@
+# version 1.3
+- added unit tests
+- added new packages for unit tests (`requirements-dev.txt`)
+
 # version 1.2
 - ability to download project as an app
 - added bash script
