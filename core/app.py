@@ -19,6 +19,10 @@ from load_existing_key import get_key_type, pubkey_generation
 from comment import add_comment_to_file
 from ssh_config_visualizer import get_ssh_config_usage
 
+# redis
+import redis, json, os
+r = redis.Redis.from_url(os.environ.get("REDIS_URL", "redis://redis:6379/0"))
+
 app = Flask(__name__)
 CORS(app)
 app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024
@@ -166,11 +170,11 @@ def test_connection():
 
 @app.route("/ssh-config-usage")
 def ssh_config_usage_route():
-    return jsonify(get_ssh_config_usage(ssh_directory))
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
-    if getattr(sys, "frozen", False):
-        app.run(host="127.0.0.1", port=5050, debug=False)
-    else:
-        app.run(host="0.0.0.0", port=5000, debug=True)
+    mtime = Path(ssh_directory).expanduser().joinpath("config").stat().st_mtime
+    key = f"ssh-config-usage:{mtime}"
+    cached = r.get(key)
+    if cached:
+        return jsonify(json.loads(cached))
+    result = get_ssh_config_usage(ssh_directory)
+    r.setex(key, 10, json.dumps(result))
+    return jsonify(result)
