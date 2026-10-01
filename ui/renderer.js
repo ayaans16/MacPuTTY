@@ -39,6 +39,15 @@ const state = {
   originalFileName: null,
 };
 
+const backendTokenPromise = window.electronAPI.getBackendToken();
+
+// fetch() against the backend with the auth header the Flask app requires.
+async function apiFetch(path, options = {}) {
+  const token = await backendTokenPromise;
+  const headers = { ...(options.headers || {}), "X-MacPuTTY-Token": token };
+  return fetch(`${BACKEND_URL}${path}`, { ...options, headers });
+}
+
 function setStatus(message, kind) {
   els.statusText.textContent = message;
   els.statusbar.classList.remove("error", "success");
@@ -109,7 +118,7 @@ els.generateBtn.addEventListener("click", async () => {
   els.generateBtn.disabled = true;
 
   try {
-    const res = await fetch(`${BACKEND_URL}/generate`, {
+    const res = await apiFetch("/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ key_type: keyType, comment }),
@@ -168,7 +177,7 @@ els.loadInput.addEventListener("change", async () => {
     formData.append("file", file);
     if (els.passphrase.value) formData.append("password", els.passphrase.value);
 
-    const res = await fetch(`${BACKEND_URL}/upload`, {
+    const res = await apiFetch("/upload", {
       method: "POST",
       body: formData,
     });
@@ -205,7 +214,7 @@ els.savePublicBtn.addEventListener("click", async () => {
     formData.append("file", new Blob([currentText], { type: "text/plain" }), "key.pub");
     formData.append("comment", els.comment.value.trim() || "MacPuTTY");
 
-    const res = await fetch(`${BACKEND_URL}/comment`, {
+    const res = await apiFetch("/comment", {
       method: "POST",
       body: formData,
     });
@@ -311,7 +320,7 @@ els.testConnectionBtn.addEventListener("click", async () => {
     formData.append("timeout", els.sshTimeout.value.trim() || "5");
     formData.append("file", sshState.keyFile);
 
-    const res = await fetch(`${BACKEND_URL}/test-connection`, {
+    const res = await apiFetch("/test-connection", {
       method: "POST",
       body: formData,
     });
@@ -399,7 +408,7 @@ function renderKeyUsage(data) {
 async function loadKeyUsage() {
   setStatus("Loading SSH config usage…");
   try {
-    const res = await fetch(`${BACKEND_URL}/ssh-config-usage`);
+    const res = await apiFetch("/ssh-config-usage");
     const body = await res.json();
     if (!res.ok) {
       throw new Error(body.error || `Server returned ${res.status}`);

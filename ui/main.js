@@ -3,6 +3,13 @@ const path = require("path");
 const fs = require("fs");
 const http = require("http");
 const { spawn } = require("child_process");
+const crypto = require("crypto");
+
+// Packaged: fresh per-launch token handed to the bundled backend.
+// Dev: the docker backend reads MACPUTTY_TOKEN from .env, so use the same value.
+const backendToken = app.isPackaged
+  ? crypto.randomBytes(32).toString("hex")
+  : process.env.MACPUTTY_TOKEN;
 
 const BACKEND_HOST = "127.0.0.1";
 const BACKEND_PORT = 5050;
@@ -32,7 +39,10 @@ function startBackend() {
       return;
     }
 
-    backendProcess = spawn(exePath, [], { stdio: ["ignore", "pipe", "pipe"] });
+    backendProcess = spawn(exePath, [], {
+      stdio: ["ignore", "pipe", "pipe"],
+      env: { ...process.env, MACPUTTY_TOKEN: backendToken },
+    });
 
     backendProcess.stdout.on("data", (d) => console.log(`[backend] ${d}`));
     backendProcess.stderr.on("data", (d) => console.error(`[backend] ${d}`));
@@ -91,6 +101,8 @@ function createWindow() {
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadFile("index.html");
 }
+
+ipcMain.handle("get-backend-token", () => backendToken);
 
 ipcMain.handle("save-file", async (_event, suggestedName, data) => {
   const { canceled, filePath } = await dialog.showSaveDialog({
