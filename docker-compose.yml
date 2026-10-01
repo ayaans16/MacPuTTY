@@ -10,6 +10,7 @@ services:
       - ${HOME}/.ssh:/root/.ssh
     environment:
       - PYTHONUNBUFFERED=1
+      - MACPUTTY_TOKEN=${MACPUTTY_TOKEN:?set MACPUTTY_TOKEN in .env (see .env.example)}
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/health', timeout=5).raise_for_status()"]
       interval: 30s

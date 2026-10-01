@@ -23,8 +23,11 @@ from ssh_config_visualizer import get_ssh_config_usage
 import redis, json, os
 r = redis.Redis.from_url(os.environ.get("REDIS_URL", "redis://redis:6379/0"))
 
+# security audit addition
+API_TOKEN = os.environ.get("MACPUTTY_TOKEN")
+
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[])
 app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024
 
 # "ssh-connection-test.py" has a hyphen, so it can't be imported with a normal
@@ -41,6 +44,13 @@ GENERATORS = {
     "ed25519": (generate_ed25519_key_pair, "id_ed25519", "id_ed25519.pub"),
 }
 
+@app.before_request
+def require_token():
+    # CORS preflights never carry custom headers; let flask-cors answer them.
+    if request.path == "/health" or request.method == "OPTIONS":
+        return
+    if not API_TOKEN or request.headers.get("X-MacPuTTY-Token") != API_TOKEN:
+        return jsonify({"error": "unauthorized"}), 401
 
 @app.route("/health")
 def health():

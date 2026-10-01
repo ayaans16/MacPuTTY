@@ -15,3 +15,5 @@ ui/resources/backend/
 .pyinstaller-build/
 /build/
 *.spec
+
+.env
